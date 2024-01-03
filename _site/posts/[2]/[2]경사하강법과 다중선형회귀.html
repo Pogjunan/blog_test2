@@ -7,9 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="전준한">
-<meta name="dcterms.date" content="2024-01-02">
+<meta name="dcterms.date" content="2023-12-22">
 
-<title>grajun - 첫번째 것</title>
+<title>grajun - [2]경사하강법과 다중선형회귀</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -155,7 +155,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">첫번째 것</h1>
+<h1 class="title">[2]경사하강법과 다중선형회귀</h1>
 </div>
 
 
@@ -172,7 +172,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">January 2, 2024</p>
+      <p class="date">December 22, 2023</p>
     </div>
   </div>
   
@@ -184,157 +184,204 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<section id="터미널과-활용" class="level1">
-<h1><code>-</code> <code>1</code>. 터미널과 활용</h1>
-<section id="가벼운-cmd-에서의-사용" class="level3">
-<h3 class="anchored" data-anchor-id="가벼운-cmd-에서의-사용">[1] 가벼운 cmd 에서의 사용</h3>
+<div id="1c98a6e9-679c-4cd1-8554-27d932c381f0" class="cell" data-tags="[]" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np </span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> [[<span class="dv">2</span>,<span class="dv">81</span>],[<span class="dv">4</span>,<span class="dv">93</span>],[<span class="dv">6</span>,<span class="dv">91</span>],[<span class="dv">8</span>,<span class="dv">97</span>]]</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>x<span class="op">=</span>[i[<span class="dv">0</span>] <span class="cf">for</span> i <span class="kw">in</span> data]</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>y<span class="op">=</span>[i[<span class="dv">1</span>] <span class="cf">for</span> i <span class="kw">in</span> data]</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>,<span class="dv">5</span>))</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>plt.scatter(x,y)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>x_data <span class="op">=</span> np.array(x)</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>y_data <span class="op">=</span> np.array(y)</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>a<span class="op">=</span><span class="dv">0</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>b<span class="op">=</span><span class="dv">0</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>lr<span class="op">=</span><span class="fl">0.03</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>epochs<span class="op">=</span><span class="dv">2001</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(epochs):</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>    y_pred <span class="op">=</span> a<span class="op">*</span> x_data <span class="op">+</span> b</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>    error <span class="op">=</span> y_data <span class="op">-</span> y_pred</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>    a_diff <span class="op">=</span> <span class="op">-</span>(<span class="dv">2</span><span class="op">/</span><span class="bu">len</span>(x_data)) <span class="op">*</span> <span class="bu">sum</span>(x_data <span class="op">*</span> (error))</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>    b_diff <span class="op">=</span> <span class="op">-</span>(<span class="dv">2</span><span class="op">/</span><span class="bu">len</span>(x_data)) <span class="op">*</span> <span class="bu">sum</span>(error)</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>    a <span class="op">=</span> a <span class="op">-</span> lr <span class="op">*</span> a_diff</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>    b <span class="op">=</span> b <span class="op">-</span> lr <span class="op">*</span> b_diff</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> i <span class="op">%</span> <span class="dv">100</span> <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"epoch=%.f , 기울기 =%.04f , 절편 = %.04f"</span> <span class="op">%</span> (i,a,b))</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>y_pred <span class="op">=</span> a <span class="op">*</span> x_data <span class="op">+</span> b</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>plt.scatter(x,y)</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>plt.plot([<span class="bu">min</span>(x_data),<span class="bu">max</span>(x_data)],[<span class="bu">min</span>(y_pred),<span class="bu">max</span>(y_pred)])</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="[2]경사하강법과 다중선형회귀_files/figure-html/cell-2-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>epoch=0 , 기울기 =27.8400 , 절편 = 5.4300
+epoch=100 , 기울기 =7.0739 , 절편 = 50.5117
+epoch=200 , 기울기 =4.0960 , 절편 = 68.2822
+epoch=300 , 기울기 =2.9757 , 절편 = 74.9678
+epoch=400 , 기울기 =2.5542 , 절편 = 77.4830
+epoch=500 , 기울기 =2.3956 , 절편 = 78.4293
+epoch=600 , 기울기 =2.3360 , 절편 = 78.7853
+epoch=700 , 기울기 =2.3135 , 절편 = 78.9192
+epoch=800 , 기울기 =2.3051 , 절편 = 78.9696
+epoch=900 , 기울기 =2.3019 , 절편 = 78.9886
+epoch=1000 , 기울기 =2.3007 , 절편 = 78.9957
+epoch=1100 , 기울기 =2.3003 , 절편 = 78.9984
+epoch=1200 , 기울기 =2.3001 , 절편 = 78.9994
+epoch=1300 , 기울기 =2.3000 , 절편 = 78.9998
+epoch=1400 , 기울기 =2.3000 , 절편 = 78.9999
+epoch=1500 , 기울기 =2.3000 , 절편 = 79.0000
+epoch=1600 , 기울기 =2.3000 , 절편 = 79.0000
+epoch=1700 , 기울기 =2.3000 , 절편 = 79.0000
+epoch=1800 , 기울기 =2.3000 , 절편 = 79.0000
+epoch=1900 , 기울기 =2.3000 , 절편 = 79.0000
+epoch=2000 , 기울기 =2.3000 , 절편 = 79.0000</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="[2]경사하강법과 다중선형회귀_files/figure-html/cell-2-output-3.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
 <blockquote class="blockquote">
-
+<h3 id="최소제곱법으로-평균제곱오차와-경사하강법으로-원하는-값-구할-수-있다." class="anchored">최소제곱법으로 평균제곱오차와 경사하강법으로 원하는 값 구할 수 있다.</h3>
 </blockquote>
 <blockquote class="blockquote">
 
 </blockquote>
-<blockquote class="blockquote">
-
-</blockquote>
-<p>(base) root@76d004f3ae03:~/studyfile/github1/class# dir 2023-python1year dashlast datatoolbox_24 professEnergy sub</p>
-<p><code>-</code> 어떤 폴더가 있었는지 표시 (옛날에 마우스가 없었음)</p>
-<p>(base) root@76d004f3ae03:~/studyfile/github1/class# mkdir asdf</p>
-<p><code>-</code> mkdir : 새로운 폴더 생성 (base) root@76d004f3ae03:~/studyfile/github1/class# cd asdf <br></p>
-<p>(base) root@76d004f3ae03:~/studyfile/github1/class/asdf# cd .. <br> <code>-</code> cd : change directory 로 디렉토리 움직이기.</p>
-<blockquote class="blockquote">
-
-</blockquote>
-<blockquote class="blockquote">
-
-</blockquote>
-</section>
-<section id="cli-라는-것은-마우스없이-키보드로-하는-컴퓨터라고-생각" class="level3">
-<h3 class="anchored" data-anchor-id="cli-라는-것은-마우스없이-키보드로-하는-컴퓨터라고-생각">[2] CLI 라는 것은 마우스없이 키보드로 하는 컴퓨터라고 생각</h3>
-<blockquote class="blockquote">
-
-</blockquote>
-<blockquote class="blockquote">
-
-</blockquote>
+<section id="다중회귀" class="level1">
+<h1>다중회귀</h1>
+<section id="y-a_1x_1-a_2x_2-b" class="level2">
+<h2 class="anchored" data-anchor-id="y-a_1x_1-a_2x_2-b"><code>-</code> $ y = a_1x_1 + a_2x_2 + b $</h2>
 <ul>
-<li>cmd 는 CLI 의 일종</li>
+<li>두 개의 독립변수 x_1 과 x_2 가 생긴 것으으로 a_1 과 a_2 구하는 것이 목표이다</li>
 </ul>
-<div class="img-fluid quarto-figure quarto-figure-center">
+<div id="b009b83d-26ab-44c8-9fc9-c47e00a49e04" class="cell" data-tags="[]" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">## 코딩으로 확인하기</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="0ff1667f-3649-4de5-8906-88ef1895a3b3" class="cell" data-tags="[]" data-execution_count="16">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span>[[<span class="dv">2</span>,<span class="dv">0</span>,<span class="dv">81</span>],[<span class="dv">4</span>,<span class="dv">4</span>,<span class="dv">93</span>],[<span class="dv">6</span>,<span class="dv">2</span>,<span class="dv">91</span>],[<span class="dv">8</span>,<span class="dv">3</span>,<span class="dv">97</span>]]</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>x1 <span class="op">=</span> [i[<span class="dv">0</span>] <span class="cf">for</span> i <span class="kw">in</span> data]</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>x2 <span class="op">=</span> [i[<span class="dv">1</span>] <span class="cf">for</span> i <span class="kw">in</span> data]</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> [i[<span class="dv">2</span>] <span class="cf">for</span> i <span class="kw">in</span> data]</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> mpl_toolkits <span class="im">import</span> mplot3d</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> plt.axes(projection<span class="op">=</span><span class="st">'3d'</span>)</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">'study_hours'</span>)</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">'private_class'</span>)</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>ax.set_zlabel(<span class="st">'Score'</span>)</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>ax.scatter(x1,x2,y)</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
 <figure class="figure">
-<p><img src="[1] 터미널과 활용 (1)_files/figure-html/dbd043d7-e679-40a3-be78-783b46233608-1-7b5103fd-fac5-4497-b0a7-31975700c4b2.png" class="img-fluid figure-img"></p>
-<figcaption>1.png</figcaption>
+<p><img src="[2]경사하강법과 다중선형회귀_files/figure-html/cell-4-output-1.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
-<p><code>-</code> CLI 에서의 python 을 키고 껐을 때의 반응</p>
-<blockquote class="blockquote">
-
-</blockquote>
-</section>
-<section id="를-이용하면-terminal-이용이-된다." class="level3">
-<h3 class="anchored" data-anchor-id="를-이용하면-terminal-이용이-된다.">[3] <code>!</code> 를 이용하면 terminal 이용이 된다.</h3>
-<div id="742549b2-874c-4b29-8dcf-bb65a1433171" class="cell" data-tags="[]" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">dir</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="1">
-<pre><code>&lt;function dir&gt;</code></pre>
 </div>
 </div>
-<div id="891e3909-76ef-4133-8441-6cc44f43eca2" class="cell" data-tags="[]" data-execution_count="2">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>mkdir</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="4112f361-9588-46b1-a05c-0ca0b3362e5b" class="cell" data-tags="[]" data-execution_count="24">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 다중회귀의 경사하강법</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>x1_data <span class="op">=</span> np.array(x1)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>x2_data <span class="op">=</span> np.array(x2)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>y_data <span class="op">=</span> np.array(y)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>a1 <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>a2 <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>lr <span class="op">=</span> <span class="fl">0.02</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>epochs <span class="op">=</span> <span class="dv">5000</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(epochs):</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>    y_pred <span class="op">=</span> a1<span class="op">*</span>x1_data <span class="op">+</span> a2<span class="op">*</span>x2_data <span class="op">+</span> b</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>    error <span class="op">=</span> y_data <span class="op">-</span> y_pred</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>    a1_diff <span class="op">=</span> <span class="op">-</span>(<span class="dv">2</span><span class="op">/</span><span class="bu">len</span>(x1_data)) <span class="op">*</span> <span class="bu">sum</span>(x1_data <span class="op">*</span>(error))</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>    a2_diff <span class="op">=</span> <span class="op">-</span>(<span class="dv">2</span><span class="op">/</span><span class="bu">len</span>(x2_data)) <span class="op">*</span> <span class="bu">sum</span>(x2_data <span class="op">*</span>(error))</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>    b_diff <span class="op">=</span> <span class="op">-</span>(<span class="dv">2</span><span class="op">/</span><span class="bu">len</span>(x1_data)) <span class="op">*</span> <span class="bu">sum</span>(y_data <span class="op">-</span> y_pred)</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>    a1 <span class="op">=</span> a1 <span class="op">-</span> lr <span class="op">*</span> a1_diff</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>    a2 <span class="op">=</span> a2 <span class="op">-</span> lr <span class="op">*</span> a2_diff</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>    b <span class="op">=</span> b <span class="op">-</span> lr <span class="op">*</span> b_diff</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> i <span class="op">%</span><span class="dv">100</span> <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"epoch=%.f , 기울기 = %.04f , 기울기a2 = %.04f , 절편 = %.04f"</span> <span class="op">%</span> (i,a1,a2,b))</span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>        </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>mkdir: missing operand
-Try 'mkdir --help' for more information.</code></pre>
+<pre><code>epoch=0 , 기울기 = 18.5600 , 기울기a2 = 8.4500 , 절편 = 3.6200
+epoch=100 , 기울기 = 7.2994 , 기울기a2 = 4.2867 , 절편 = 38.0427
+epoch=200 , 기울기 = 4.5683 , 기울기a2 = 3.3451 , 절편 = 56.7901
+epoch=300 , 기울기 = 3.1235 , 기울기a2 = 2.8463 , 절편 = 66.7100
+epoch=400 , 기울기 = 2.3591 , 기울기a2 = 2.5823 , 절편 = 71.9589
+epoch=500 , 기울기 = 1.9546 , 기울기a2 = 2.4427 , 절편 = 74.7362
+epoch=600 , 기울기 = 1.7405 , 기울기a2 = 2.3688 , 절편 = 76.2058
+epoch=700 , 기울기 = 1.6273 , 기울기a2 = 2.3297 , 절편 = 76.9833
+epoch=800 , 기울기 = 1.5673 , 기울기a2 = 2.3090 , 절편 = 77.3948
+epoch=900 , 기울기 = 1.5356 , 기울기a2 = 2.2980 , 절편 = 77.6125
+epoch=1000 , 기울기 = 1.5189 , 기울기a2 = 2.2922 , 절편 = 77.7277
+epoch=1100 , 기울기 = 1.5100 , 기울기a2 = 2.2892 , 절편 = 77.7886
+epoch=1200 , 기울기 = 1.5053 , 기울기a2 = 2.2875 , 절편 = 77.8209
+epoch=1300 , 기울기 = 1.5028 , 기울기a2 = 2.2867 , 절편 = 77.8380
+epoch=1400 , 기울기 = 1.5015 , 기울기a2 = 2.2862 , 절편 = 77.8470
+epoch=1500 , 기울기 = 1.5008 , 기울기a2 = 2.2860 , 절편 = 77.8518
+epoch=1600 , 기울기 = 1.5004 , 기울기a2 = 2.2859 , 절편 = 77.8543
+epoch=1700 , 기울기 = 1.5002 , 기울기a2 = 2.2858 , 절편 = 77.8556
+epoch=1800 , 기울기 = 1.5001 , 기울기a2 = 2.2858 , 절편 = 77.8563
+epoch=1900 , 기울기 = 1.5001 , 기울기a2 = 2.2857 , 절편 = 77.8567
+epoch=2000 , 기울기 = 1.5000 , 기울기a2 = 2.2857 , 절편 = 77.8569
+epoch=2100 , 기울기 = 1.5000 , 기울기a2 = 2.2857 , 절편 = 77.8570
+epoch=2200 , 기울기 = 1.5000 , 기울기a2 = 2.2857 , 절편 = 77.8571
+epoch=2300 , 기울기 = 1.5000 , 기울기a2 = 2.2857 , 절편 = 77.8571
+epoch=2400 , 기울기 = 1.5000 , 기울기a2 = 2.2857 , 절편 = 77.8571
+epoch=2500 , 기울기 = 1.5000 , 기울기a2 = 2.2857 , 절편 = 77.8571
+epoch=2600 , 기울기 = 1.5000 , 기울기a2 = 2.2857 , 절편 = 77.8571
+epoch=2700 , 기울기 = 1.5000 , 기울기a2 = 2.2857 , 절편 = 77.8571
+epoch=2800 , 기울기 = 1.5000 , 기울기a2 = 2.2857 , 절편 = 77.8571
+epoch=2900 , 기울기 = 1.5000 , 기울기a2 = 2.2857 , 절편 = 77.8571
+epoch=3000 , 기울기 = 1.5000 , 기울기a2 = 2.2857 , 절편 = 77.8571
+epoch=3100 , 기울기 = 1.5000 , 기울기a2 = 2.2857 , 절편 = 77.8571
+epoch=3200 , 기울기 = 1.5000 , 기울기a2 = 2.2857 , 절편 = 77.8571
+epoch=3300 , 기울기 = 1.5000 , 기울기a2 = 2.2857 , 절편 = 77.8571
+epoch=3400 , 기울기 = 1.5000 , 기울기a2 = 2.2857 , 절편 = 77.8571
+epoch=3500 , 기울기 = 1.5000 , 기울기a2 = 2.2857 , 절편 = 77.8571
+epoch=3600 , 기울기 = 1.5000 , 기울기a2 = 2.2857 , 절편 = 77.8571
+epoch=3700 , 기울기 = 1.5000 , 기울기a2 = 2.2857 , 절편 = 77.8571
+epoch=3800 , 기울기 = 1.5000 , 기울기a2 = 2.2857 , 절편 = 77.8571
+epoch=3900 , 기울기 = 1.5000 , 기울기a2 = 2.2857 , 절편 = 77.8571
+epoch=4000 , 기울기 = 1.5000 , 기울기a2 = 2.2857 , 절편 = 77.8571
+epoch=4100 , 기울기 = 1.5000 , 기울기a2 = 2.2857 , 절편 = 77.8571
+epoch=4200 , 기울기 = 1.5000 , 기울기a2 = 2.2857 , 절편 = 77.8571
+epoch=4300 , 기울기 = 1.5000 , 기울기a2 = 2.2857 , 절편 = 77.8571
+epoch=4400 , 기울기 = 1.5000 , 기울기a2 = 2.2857 , 절편 = 77.8571
+epoch=4500 , 기울기 = 1.5000 , 기울기a2 = 2.2857 , 절편 = 77.8571
+epoch=4600 , 기울기 = 1.5000 , 기울기a2 = 2.2857 , 절편 = 77.8571
+epoch=4700 , 기울기 = 1.5000 , 기울기a2 = 2.2857 , 절편 = 77.8571
+epoch=4800 , 기울기 = 1.5000 , 기울기a2 = 2.2857 , 절편 = 77.8571
+epoch=4900 , 기울기 = 1.5000 , 기울기a2 = 2.2857 , 절편 = 77.8571</code></pre>
 </div>
 </div>
-<div id="f8510c97-3f5e-491e-8e1c-812f85fbae46" class="cell" data-tags="[]" data-execution_count="3">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span><span class="bu">dir</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co"># `!` 를 씀으로 터미널에서 사용하겠다는 의미 </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>1.png  README.md  [1]\ 터미널과\ 활용.ipynb  asdf</code></pre>
-</div>
-</div>
-<div id="f596ffb9-87e7-46f3-b8c1-73aa038db494" class="cell" data-tags="[]" data-execution_count="4">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>mkdir asdf</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>mkdir: cannot create directory ‘asdf’: File exists</code></pre>
-</div>
-</div>
-<div id="d5f10843-f4ec-4ba4-be78-19646d1f990b" class="cell" data-tags="[]" data-execution_count="5">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 모든 GUI 명령어(현재컴픁)들은 CLI 에 대응된다</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<blockquote class="blockquote">
 
-</blockquote>
-<p><br></p>
+
 </section>
-<section id="원격컴퓨터" class="level2">
-<h2 class="anchored" data-anchor-id="원격컴퓨터"><code>-</code> [4] 원격컴퓨터</h2>
-<p><code>-</code> terminal 을 주는 것 : 모든 컴퓨터의 권한을 주는 것 <br> <code>-</code> 조심히 다뤄야한다.</p>
-<blockquote class="blockquote">
-
-</blockquote>
-<blockquote class="blockquote">
-
-</blockquote>
-<section id="git-의-설치" class="level3">
-<h3 class="anchored" data-anchor-id="git-의-설치"><code>-</code> [5] Git 의 설치</h3>
-<p>깃 다운로드: https://git-scm.com/downloads (完) <br> 토큰생성 및 복사: https://github.com/settings/tokens (完) <br></p>
-<blockquote class="blockquote">
-
-</blockquote>
-<section id="원격과-로칼의-연결-중요" class="level4">
-<h4 class="anchored" data-anchor-id="원격과-로칼의-연결-중요"><code>-</code> 원격과 로칼의 연결 중요</h4>
-<div class="img-fluid quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="[1] 터미널과 활용 (1)_files/figure-html/f150efff-82ef-426d-a8dd-c219c5d0a9bf-1-89af5910-30d5-4248-98a0-503133b24a20.png" class="img-fluid figure-img"></p>
-<figcaption>2.png</figcaption>
-</figure>
-</div>
-</section>
-</section>
-</section>
-</section>
-<section id="section" class="level1">
-<h1>3.</h1>
-<div class="img-fluid quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="[1] 터미널과 활용 (1)_files/figure-html/edf7be2b-e3d3-4483-b8fe-5ec864a4984a-1-e07d21aa-692b-4bf0-81ca-94cb92f6dfad.png" class="img-fluid figure-img"></p>
-<figcaption>3.png</figcaption>
-</figure>
-</div>
-<p><code>-</code> 파일 삭제 : rm -rf &lt;파일명&gt;</p>
-<p><code>-</code> vi 배우기 : vi 는 메모장실행파일</p>
-<div class="img-fluid quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="[1] 터미널과 활용 (1)_files/figure-html/4a8b88ba-22ed-4c2f-acf5-532b9a0a5e16-1-32477595-1935-466c-b0e8-cf3b1d9238c1.png" class="img-fluid figure-img"></p>
-<figcaption>4.png</figcaption>
-</figure>
-</div>
-<ul>
-<li>글씨 사용하려면 : ‘i’</li>
-<li>빠져나오려면 : esc -&gt; ‘:wq’ (저장후나가기)</li>
-</ul>
-<p><img src="[1] 터미널과 활용 (1)_files/figure-html/47f2e484-7ade-48ff-9bb7-d88bb8405558-2-df18ba85-48d8-4606-80ab-f000730e3ada.png" class="img-fluid" alt="5.png"><img src="[1] 터미널과 활용 (1)_files/figure-html/47f2e484-7ade-48ff-9bb7-d88bb8405558-1-38994587-9438-4eec-b65e-cac758aafe5a.png" class="img-fluid" alt="download.png"></p>
-<p><code>-</code> dd : esc상태에서 jupyter 에서 쓰던 dd 의 유래가 여기이다.</p>
-<p><code>-</code> /asdf : 명령모드(esc)상태에서 /asdf 하면 찾아지고 n 누르면 다음단어 , shift+n 누르면 이전단어가 된다.</p>
-<blockquote class="blockquote">
-
-</blockquote>
-<blockquote class="blockquote">
-
-</blockquote>
-</section>
-<section id="윈도우-원격컴퓨터-ii-써보기" class="level1">
-<h1>윈도우 원격컴퓨터 I^I 써보기</h1>
-<p><code>ssh</code> : terminal 을 원격으로 전환하는 시스템 + 인터넷이 연결되어있어야함 (= ip 를 받아야한다 = 컴퓨터가 유니크하다)</p>
-<p><code>ssh username@210.117.173.182 (개인아이피)</code></p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>quarto create<span class="op">-</span>project <span class="op">--</span><span class="bu">type</span> website:blog</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>git add .</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>git commit <span class="op">-</span>m .</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>git push</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p><code>quarto publish</code> <br> <code>quarto publish gh-pages</code> <br> - 이러면 github 랑 연결하면 바로 블로그가 생긴다.</p>
-
-
 </section>
 
 </main> <!-- /main -->

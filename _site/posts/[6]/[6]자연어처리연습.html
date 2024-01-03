@@ -7,9 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="전준한">
-<meta name="dcterms.date" content="2024-01-02">
+<meta name="dcterms.date" content="2024-11-12">
 
-<title>grajun - 두번째 것</title>
+<title>grajun - [6]자연어처리연습</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -155,7 +155,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">두번째 것</h1>
+<h1 class="title">[6]자연어처리연습</h1>
 </div>
 
 
@@ -172,7 +172,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">January 2, 2024</p>
+      <p class="date">November 12, 2024</p>
     </div>
   </div>
   
@@ -184,15 +184,158 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p><code>[2]</code> 연습</p>
-<div id="ee112922-a825-4e10-9963-9dfad8d92366" class="cell" data-tags="[]" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span><span class="op">+</span><span class="dv">1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="1">
-<pre><code>2</code></pre>
+<section id="자연어-처리-연습" class="level1">
+<h1>자연어 처리 연습</h1>
+<section id="순서" class="level3">
+<h3 class="anchored" data-anchor-id="순서">[순서]</h3>
+<ol type="1">
+<li>토큰화 <br></li>
+<li>원핫인코딩(보통 많이사용) <br></li>
+<li>단어임베딩 # 중요</li>
+<li>각자 필요한 EDA 시작</li>
+</ol>
+</section>
+<section id="가벼운-영화-리뷰-긍정부정적-예측" class="level3">
+<h3 class="anchored" data-anchor-id="가벼운-영화-리뷰-긍정부정적-예측">가벼운 영화 리뷰 긍정,부정적 예측</h3>
+<ol type="1">
+<li>Import</li>
+</ol>
+<div id="aaad4289-61a8-4dd9-a016-a17c66162fd4" class="cell" data-tags="[]" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy </span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> tensorflow <span class="im">as</span> tf</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> numpy <span class="im">import</span> array</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tensorflow.keras.preprocessing.text <span class="im">import</span> Tokenizer</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tensorflow.keras.preprocessing.sequence <span class="im">import</span> pad_sequences</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tensorflow.keras.models <span class="im">import</span> Sequential</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tensorflow.keras.layers <span class="im">import</span> Dense,Flatten,Embedding</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="5a27089b-54f4-4cc2-8a1a-47f0784933ee" class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>docs <span class="op">=</span> [<span class="st">'너무 재밌네요'</span>,<span class="st">'최고예요'</span>,<span class="st">'참 잘 만든 영화예요'</span>,<span class="st">'추천하고 싶은 영화입니다.'</span>,<span class="st">'한번 더 보고싶네요'</span>,<span class="st">' 글쎄요'</span>, <span class="op">\</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>        <span class="st">'별로예요'</span>,<span class="st">'생각보다 지루하네요'</span>,<span class="st">'연기가 어색해요.'</span>,<span class="st">'재미없어요'</span>]</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 긍정=1, 부정=0</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>classes <span class="op">=</span> array([<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>])</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co">#토큰화</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>token<span class="op">=</span>Tokenizer()</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>token.fit_on_texts(docs)</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(token.word_index)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>{'너무': 1, '재밌네요': 2, '최고예요': 3, '참': 4, '잘': 5, '만든': 6, '영화예요': 7, '추천하고': 8, '싶은': 9, '영화입니다': 10, '한번': 11, '더': 12, '보고싶네요': 13, '글쎄요': 14, '별로예요': 15, '생각보다': 16, '지루하네요': 17, '연기가': 18, '어색해요': 19, '재미없어요': 20}</code></pre>
 </div>
 </div>
+<div id="33ac822c-bda9-4d76-9ab0-88ffc75e405c" class="cell" data-tags="[]" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">#패딩 , 서로 다른 길이를 4로 맞추기</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> token.texts_to_sequences(docs) <span class="co">#keras 제공의 토큰만으로 채워진 인덱스 배열</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(x)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>padded_x <span class="op">=</span> pad_sequences(x,<span class="dv">4</span>)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(padded_x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[1, 2], [3], [4, 5, 6, 7], [8, 9, 10], [11, 12, 13], [14], [15], [16, 17], [18, 19], [20]]
+[[ 0  0  1  2]
+ [ 0  0  0  3]
+ [ 4  5  6  7]
+ [ 0  8  9 10]
+ [ 0 11 12 13]
+ [ 0  0  0 14]
+ [ 0  0  0 15]
+ [ 0  0 16 17]
+ [ 0  0 18 19]
+ [ 0  0  0 20]]</code></pre>
+</div>
+</div>
+<div id="97dd65bf-a235-4dda-97b4-6a9f425d4560" class="cell" data-tags="[]" data-execution_count="20">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>x</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="20">
+<pre><code>[[1, 2],
+ [3],
+ [4, 5, 6, 7],
+ [8, 9, 10],
+ [11, 12, 13],
+ [14],
+ [15],
+ [16, 17],
+ [18, 19],
+ [20]]</code></pre>
+</div>
+</div>
+<div id="30fa08cb-8350-4fe0-a03b-8289efdee4cc" class="cell" data-tags="[]" data-execution_count="23">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 임베딩 입력 단어 수 지정</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>word_size <span class="op">=</span> <span class="bu">len</span>(token.word_index)<span class="op">+</span><span class="dv">1</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> keras.utils <span class="im">import</span> to_categorical</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co">#x = to_categorical(x,num_classes=word_size)</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co">#print(x) =&gt; 맨 앞에 0 추가되어 단어 수 보다 1 이 더 많게 인덱스 숫자 잡아줌.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="92f1d328-d328-4508-af20-9da33cba4ab2" class="cell" data-tags="[]" data-execution_count="24">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">#단어 임베딩 포함한 딥러닝 모델 만들기 - tensorflow</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> Sequential()</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>model.add(Embedding(word_size,<span class="dv">8</span>,input_length<span class="op">=</span><span class="dv">4</span>)) <span class="co">#단어임베딩</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>model.add(Flatten())</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>model.add(Dense(<span class="dv">1</span>,activation<span class="op">=</span><span class="st">'sigmoid'</span>))</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>model.<span class="bu">compile</span>(optimizer<span class="op">=</span><span class="st">'adam'</span>, loss<span class="op">=</span><span class="st">'binary_crossentropy'</span>,</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>              metrics<span class="op">=</span>[<span class="st">'accuracy'</span>])</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>model.fit(padded_x,classes,epochs<span class="op">=</span><span class="dv">20</span>)</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st"> Accuracy: </span><span class="sc">%.4f</span><span class="st">"</span> <span class="op">%</span> (model.evaluate(padded_x,classes)[<span class="dv">1</span>]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Epoch 1/20
+1/1 [==============================] - 0s 325ms/step - loss: 0.6873 - accuracy: 0.7000
+Epoch 2/20
+1/1 [==============================] - 0s 3ms/step - loss: 0.6852 - accuracy: 0.7000
+Epoch 3/20
+1/1 [==============================] - 0s 2ms/step - loss: 0.6830 - accuracy: 0.7000
+Epoch 4/20
+1/1 [==============================] - 0s 3ms/step - loss: 0.6808 - accuracy: 0.8000
+Epoch 5/20
+1/1 [==============================] - 0s 3ms/step - loss: 0.6786 - accuracy: 0.8000
+Epoch 6/20
+1/1 [==============================] - 0s 3ms/step - loss: 0.6765 - accuracy: 0.8000
+Epoch 7/20
+1/1 [==============================] - 0s 3ms/step - loss: 0.6743 - accuracy: 0.8000
+Epoch 8/20
+1/1 [==============================] - 0s 2ms/step - loss: 0.6721 - accuracy: 0.8000
+Epoch 9/20
+1/1 [==============================] - 0s 3ms/step - loss: 0.6699 - accuracy: 0.9000
+Epoch 10/20
+1/1 [==============================] - 0s 2ms/step - loss: 0.6677 - accuracy: 0.9000
+Epoch 11/20
+1/1 [==============================] - 0s 3ms/step - loss: 0.6655 - accuracy: 1.0000
+Epoch 12/20
+1/1 [==============================] - 0s 3ms/step - loss: 0.6633 - accuracy: 1.0000
+Epoch 13/20
+1/1 [==============================] - 0s 3ms/step - loss: 0.6611 - accuracy: 1.0000
+Epoch 14/20
+1/1 [==============================] - 0s 3ms/step - loss: 0.6589 - accuracy: 1.0000
+Epoch 15/20
+1/1 [==============================] - 0s 3ms/step - loss: 0.6567 - accuracy: 1.0000
+Epoch 16/20
+1/1 [==============================] - 0s 3ms/step - loss: 0.6545 - accuracy: 1.0000
+Epoch 17/20
+1/1 [==============================] - 0s 2ms/step - loss: 0.6522 - accuracy: 1.0000
+Epoch 18/20
+1/1 [==============================] - 0s 3ms/step - loss: 0.6499 - accuracy: 1.0000
+Epoch 19/20
+1/1 [==============================] - 0s 3ms/step - loss: 0.6477 - accuracy: 1.0000
+Epoch 20/20
+1/1 [==============================] - 0s 3ms/step - loss: 0.6454 - accuracy: 1.0000
+1/1 [==============================] - 0s 80ms/step - loss: 0.6431 - accuracy: 1.0000
+
+ Accuracy: 1.0000</code></pre>
+</div>
+</div>
+<p>[해석] - 단어 임베딩 : 16차원의 벡터를 4차원의 벡터로 바꾼 것. - 단어간의 유사도를 통해 밀집된 정보로 공간 정보를 줄임. - 오차역전파를 이용하여 최적의 유사도 계산과정 거침. - keras 의 Embedding 함수 이용 (입력과 출력 크기를 결정) - 패딩 : 길이를 똑같이 맞춰주는 작업 - [3] 과 [4,5,6,7] 은 길이가 달라서 학습이 안되어 맞추어주어야한다. - keras 의 pad_sequence() 함수로 원하는 길이보다 짧은 부분은 숫자 0 을 채우고 길면 잘라서 길이 맞춥니다.</p>
+<ul>
+<li>word_size = len(token.word_index) +1
+<ul>
+<li>word_size 는 인덱스가 몇 개 입력되어야하는지를 정합니다.</li>
+<li>1번째 단어 -&gt; 0 번 , 2번째 단어 -&gt; 1번 … 따라서 +1 로 길이를 (n-1)+1 = n 으로 맞출 수 있습니다.</li>
+</ul></li>
+</ul>
 
 
+</section>
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
