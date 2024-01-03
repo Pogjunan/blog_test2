@@ -2,7 +2,9 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/터미널활용/[7] RNN.html",
       "/posts/터미널활용/[5]모델정리.html",
+      "/posts/터미널활용/[6]자연어처리연습.html",
       "/posts/터미널활용/[3]신경망의 이해.html",
       "/posts/터미널활용/[4]딥러닝기초실습.html",
       "/posts/터미널활용/[0] 터미널과 활용 (1).html",
