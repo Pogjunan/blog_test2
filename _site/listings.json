@@ -2,8 +2,12 @@
   {
     "listing": "/index.html",
     "items": [
-      "/posts/[1]/[1] 터미널과 활용 (1).html",
+      "/posts/터미널활용/[5]모델정리.html",
+      "/posts/터미널활용/[3]신경망의 이해.html",
+      "/posts/터미널활용/[4]딥러닝기초실습.html",
+      "/posts/터미널활용/[0] 터미널과 활용 (1).html",
       "/posts/터미널활용/[2] 연습연습.html",
+      "/posts/터미널활용/[2]경사하강법과 다중선형회귀.html",
       "/posts/터미널활용/[1]tensorflow와 기초수학.html"
     ]
   }

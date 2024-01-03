@@ -7,6 +7,90 @@
     "text": "About this blog"
   },
   {
+    "objectID": "posts/터미널활용/[4]딥러닝기초실습.html",
+    "href": "posts/터미널활용/[4]딥러닝기초실습.html",
+    "title": "[4]딥러닝기초실습",
+    "section": "",
+    "text": "#모델 직접 설계 (tensorflow)\n\nfrom tensorflow.keras.models import Sequential\nfrom tensorflow.keras.layers import Dense\n\nimport numpy as np\nimport tensorflow as tf\n\ntf.random.set_seed(3)\n\n# data_set\nData_set = np.load(txt(\"....\",deliiter=\",\"))\n\n# X = Data_set[:,0:17]\n# Y = Data_set[:,17]\nmodel = Sequential()\nmodel.add(Dense(30,inpt_dim=17 , activation='relu'))\nmodel.add(Dense(1, activation='sigmoid'))"
+  },
+  {
+    "objectID": "posts/터미널활용/[4]딥러닝기초실습.html#add-로-새로운-층을-만들고-dense-함수로-노드의-개수를-30개로-만듭니다.",
+    "href": "posts/터미널활용/[4]딥러닝기초실습.html#add-로-새로운-층을-만들고-dense-함수로-노드의-개수를-30개로-만듭니다.",
+    "title": "[4]딥러닝기초실습",
+    "section": "add 로 새로운 층을 만들고 Dense 함수로 노드의 개수를 30개로 만듭니다.",
+    "text": "add 로 새로운 층을 만들고 Dense 함수로 노드의 개수를 30개로 만듭니다.\n- input_dim 으로 변수개수를 만들고 dense 는 은닉층 + 입력층의 역할을 겸합니다. - 현재 30,17 은 17개수의 변수 -&gt; 30개의 변수로 늘리겠다는것입니다.\n\nmodel.compile(loss='mean_squared_error',optimizer='adam',metrics=['aaccuracy'])\nmodel.fit(X,Y,epochs=100,batch__size=10)\n\nmetric 함수는 모델이 컴파일될 때 모델 수행 결과 나타나게끔 설정하는 부분입니다."
+  },
+  {
+    "objectID": "posts/터미널활용/[4]딥러닝기초실습.html#교차엔트로피",
+    "href": "posts/터미널활용/[4]딥러닝기초실습.html#교차엔트로피",
+    "title": "[4]딥러닝기초실습",
+    "section": "교차엔트로피",
+    "text": "교차엔트로피\n\n분류문제에서 많이 사용되며 이항인 경우 binary cross entropy 사용\n\n\n## 이후 쉬운  딥러닝 예시 나왔습니다."
+  },
+  {
+    "objectID": "posts/터미널활용/[2] 연습연습.html",
+    "href": "posts/터미널활용/[2] 연습연습.html",
+    "title": "두번째 것",
+    "section": "",
+    "text": "[2] 연습\n\n1+1\n\n2"
+  },
+  {
+    "objectID": "posts/터미널활용/[2]경사하강법과 다중선형회귀.html",
+    "href": "posts/터미널활용/[2]경사하강법과 다중선형회귀.html",
+    "title": "[2]경사하강법과 다중선형회귀",
+    "section": "",
+    "text": "import numpy as np \nimport pandas as pd\nimport matplotlib.pyplot as plt\n\ndata = [[2,81],[4,93],[6,91],[8,97]]\nx=[i[0] for i in data]\ny=[i[1] for i in data]\n\nplt.figure(figsize=(8,5))\nplt.scatter(x,y)\nplt.show()\n\nx_data = np.array(x)\ny_data = np.array(y)\n\na=0\nb=0\n\nlr=0.03\nepochs=2001\n\nfor i in range(epochs):\n    y_pred = a* x_data + b\n    error = y_data - y_pred\n    a_diff = -(2/len(x_data)) * sum(x_data * (error))\n    b_diff = -(2/len(x_data)) * sum(error)\n    \n    a = a - lr * a_diff\n    b = b - lr * b_diff\n    if i % 100 == 0:\n        print(\"epoch=%.f , 기울기 =%.04f , 절편 = %.04f\" % (i,a,b))\n        \ny_pred = a * x_data + b\nplt.scatter(x,y)\nplt.plot([min(x_data),max(x_data)],[min(y_pred),max(y_pred)])\nplt.show()\n\n\n\n\n\n\n\n\nepoch=0 , 기울기 =27.8400 , 절편 = 5.4300\nepoch=100 , 기울기 =7.0739 , 절편 = 50.5117\nepoch=200 , 기울기 =4.0960 , 절편 = 68.2822\nepoch=300 , 기울기 =2.9757 , 절편 = 74.9678\nepoch=400 , 기울기 =2.5542 , 절편 = 77.4830\nepoch=500 , 기울기 =2.3956 , 절편 = 78.4293\nepoch=600 , 기울기 =2.3360 , 절편 = 78.7853\nepoch=700 , 기울기 =2.3135 , 절편 = 78.9192\nepoch=800 , 기울기 =2.3051 , 절편 = 78.9696\nepoch=900 , 기울기 =2.3019 , 절편 = 78.9886\nepoch=1000 , 기울기 =2.3007 , 절편 = 78.9957\nepoch=1100 , 기울기 =2.3003 , 절편 = 78.9984\nepoch=1200 , 기울기 =2.3001 , 절편 = 78.9994\nepoch=1300 , 기울기 =2.3000 , 절편 = 78.9998\nepoch=1400 , 기울기 =2.3000 , 절편 = 78.9999\nepoch=1500 , 기울기 =2.3000 , 절편 = 79.0000\nepoch=1600 , 기울기 =2.3000 , 절편 = 79.0000\nepoch=1700 , 기울기 =2.3000 , 절편 = 79.0000\nepoch=1800 , 기울기 =2.3000 , 절편 = 79.0000\nepoch=1900 , 기울기 =2.3000 , 절편 = 79.0000\nepoch=2000 , 기울기 =2.3000 , 절편 = 79.0000"
+  },
+  {
+    "objectID": "posts/터미널활용/[2]경사하강법과 다중선형회귀.html#y-a_1x_1-a_2x_2-b",
+    "href": "posts/터미널활용/[2]경사하강법과 다중선형회귀.html#y-a_1x_1-a_2x_2-b",
+    "title": "[2]경사하강법과 다중선형회귀",
+    "section": "- $ y = a_1x_1 + a_2x_2 + b $",
+    "text": "- $ y = a_1x_1 + a_2x_2 + b $\n\n두 개의 독립변수 x_1 과 x_2 가 생긴 것으으로 a_1 과 a_2 구하는 것이 목표이다\n\n\n## 코딩으로 확인하기\n\n\ndata =[[2,0,81],[4,4,93],[6,2,91],[8,3,97]]\nx1 = [i[0] for i in data]\nx2 = [i[1] for i in data]\ny = [i[2] for i in data]\n\nimport matplotlib.pyplot as plt\nfrom mpl_toolkits import mplot3d\n\nax = plt.axes(projection='3d')\nax.set_xlabel('study_hours')\nax.set_ylabel('private_class')\nax.set_zlabel('Score')\nax.scatter(x1,x2,y)\nplt.show()\n\n\n\n\n\n\n\n\n\n# 다중회귀의 경사하강법\n\nx1_data = np.array(x1)\nx2_data = np.array(x2)\ny_data = np.array(y)\n\na1 = 0\na2 = 0\nb = 0\n\n\nlr = 0.02\nepochs = 5000\nfor i in range(epochs):\n    y_pred = a1*x1_data + a2*x2_data + b\n    error = y_data - y_pred\n    a1_diff = -(2/len(x1_data)) * sum(x1_data *(error))\n    a2_diff = -(2/len(x2_data)) * sum(x2_data *(error))\n    b_diff = -(2/len(x1_data)) * sum(y_data - y_pred)\n    a1 = a1 - lr * a1_diff\n    a2 = a2 - lr * a2_diff\n    b = b - lr * b_diff\n\n\n    if i %100 == 0:\n        print(\"epoch=%.f , 기울기 = %.04f , 기울기a2 = %.04f , 절편 = %.04f\" % (i,a1,a2,b))\n        \n\nepoch=0 , 기울기 = 18.5600 , 기울기a2 = 8.4500 , 절편 = 3.6200\nepoch=100 , 기울기 = 7.2994 , 기울기a2 = 4.2867 , 절편 = 38.0427\nepoch=200 , 기울기 = 4.5683 , 기울기a2 = 3.3451 , 절편 = 56.7901\nepoch=300 , 기울기 = 3.1235 , 기울기a2 = 2.8463 , 절편 = 66.7100\nepoch=400 , 기울기 = 2.3591 , 기울기a2 = 2.5823 , 절편 = 71.9589\nepoch=500 , 기울기 = 1.9546 , 기울기a2 = 2.4427 , 절편 = 74.7362\nepoch=600 , 기울기 = 1.7405 , 기울기a2 = 2.3688 , 절편 = 76.2058\nepoch=700 , 기울기 = 1.6273 , 기울기a2 = 2.3297 , 절편 = 76.9833\nepoch=800 , 기울기 = 1.5673 , 기울기a2 = 2.3090 , 절편 = 77.3948\nepoch=900 , 기울기 = 1.5356 , 기울기a2 = 2.2980 , 절편 = 77.6125\nepoch=1000 , 기울기 = 1.5189 , 기울기a2 = 2.2922 , 절편 = 77.7277\nepoch=1100 , 기울기 = 1.5100 , 기울기a2 = 2.2892 , 절편 = 77.7886\nepoch=1200 , 기울기 = 1.5053 , 기울기a2 = 2.2875 , 절편 = 77.8209\nepoch=1300 , 기울기 = 1.5028 , 기울기a2 = 2.2867 , 절편 = 77.8380\nepoch=1400 , 기울기 = 1.5015 , 기울기a2 = 2.2862 , 절편 = 77.8470\nepoch=1500 , 기울기 = 1.5008 , 기울기a2 = 2.2860 , 절편 = 77.8518\nepoch=1600 , 기울기 = 1.5004 , 기울기a2 = 2.2859 , 절편 = 77.8543\nepoch=1700 , 기울기 = 1.5002 , 기울기a2 = 2.2858 , 절편 = 77.8556\nepoch=1800 , 기울기 = 1.5001 , 기울기a2 = 2.2858 , 절편 = 77.8563\nepoch=1900 , 기울기 = 1.5001 , 기울기a2 = 2.2857 , 절편 = 77.8567\nepoch=2000 , 기울기 = 1.5000 , 기울기a2 = 2.2857 , 절편 = 77.8569\nepoch=2100 , 기울기 = 1.5000 , 기울기a2 = 2.2857 , 절편 = 77.8570\nepoch=2200 , 기울기 = 1.5000 , 기울기a2 = 2.2857 , 절편 = 77.8571\nepoch=2300 , 기울기 = 1.5000 , 기울기a2 = 2.2857 , 절편 = 77.8571\nepoch=2400 , 기울기 = 1.5000 , 기울기a2 = 2.2857 , 절편 = 77.8571\nepoch=2500 , 기울기 = 1.5000 , 기울기a2 = 2.2857 , 절편 = 77.8571\nepoch=2600 , 기울기 = 1.5000 , 기울기a2 = 2.2857 , 절편 = 77.8571\nepoch=2700 , 기울기 = 1.5000 , 기울기a2 = 2.2857 , 절편 = 77.8571\nepoch=2800 , 기울기 = 1.5000 , 기울기a2 = 2.2857 , 절편 = 77.8571\nepoch=2900 , 기울기 = 1.5000 , 기울기a2 = 2.2857 , 절편 = 77.8571\nepoch=3000 , 기울기 = 1.5000 , 기울기a2 = 2.2857 , 절편 = 77.8571\nepoch=3100 , 기울기 = 1.5000 , 기울기a2 = 2.2857 , 절편 = 77.8571\nepoch=3200 , 기울기 = 1.5000 , 기울기a2 = 2.2857 , 절편 = 77.8571\nepoch=3300 , 기울기 = 1.5000 , 기울기a2 = 2.2857 , 절편 = 77.8571\nepoch=3400 , 기울기 = 1.5000 , 기울기a2 = 2.2857 , 절편 = 77.8571\nepoch=3500 , 기울기 = 1.5000 , 기울기a2 = 2.2857 , 절편 = 77.8571\nepoch=3600 , 기울기 = 1.5000 , 기울기a2 = 2.2857 , 절편 = 77.8571\nepoch=3700 , 기울기 = 1.5000 , 기울기a2 = 2.2857 , 절편 = 77.8571\nepoch=3800 , 기울기 = 1.5000 , 기울기a2 = 2.2857 , 절편 = 77.8571\nepoch=3900 , 기울기 = 1.5000 , 기울기a2 = 2.2857 , 절편 = 77.8571\nepoch=4000 , 기울기 = 1.5000 , 기울기a2 = 2.2857 , 절편 = 77.8571\nepoch=4100 , 기울기 = 1.5000 , 기울기a2 = 2.2857 , 절편 = 77.8571\nepoch=4200 , 기울기 = 1.5000 , 기울기a2 = 2.2857 , 절편 = 77.8571\nepoch=4300 , 기울기 = 1.5000 , 기울기a2 = 2.2857 , 절편 = 77.8571\nepoch=4400 , 기울기 = 1.5000 , 기울기a2 = 2.2857 , 절편 = 77.8571\nepoch=4500 , 기울기 = 1.5000 , 기울기a2 = 2.2857 , 절편 = 77.8571\nepoch=4600 , 기울기 = 1.5000 , 기울기a2 = 2.2857 , 절편 = 77.8571\nepoch=4700 , 기울기 = 1.5000 , 기울기a2 = 2.2857 , 절편 = 77.8571\nepoch=4800 , 기울기 = 1.5000 , 기울기a2 = 2.2857 , 절편 = 77.8571\nepoch=4900 , 기울기 = 1.5000 , 기울기a2 = 2.2857 , 절편 = 77.8571"
+  },
+  {
+    "objectID": "posts/터미널활용/[0] 터미널과 활용 (1).html",
+    "href": "posts/터미널활용/[0] 터미널과 활용 (1).html",
+    "title": "첫번째 것",
+    "section": "",
+    "text": "(base) root@76d004f3ae03:~/studyfile/github1/class# dir 2023-python1year dashlast datatoolbox_24 professEnergy sub\n- 어떤 폴더가 있었는지 표시 (옛날에 마우스가 없었음)\n(base) root@76d004f3ae03:~/studyfile/github1/class# mkdir asdf\n- mkdir : 새로운 폴더 생성 (base) root@76d004f3ae03:~/studyfile/github1/class# cd asdf \n(base) root@76d004f3ae03:~/studyfile/github1/class/asdf# cd ..  - cd : change directory 로 디렉토리 움직이기.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\ncmd 는 CLI 의 일종\n\n\n\n\n1.png\n\n\n- CLI 에서의 python 을 키고 껐을 때의 반응\n\n\n\n\n\n\n\ndir\n\n&lt;function dir&gt;\n\n\n\nmkdir\n\nmkdir: missing operand\nTry 'mkdir --help' for more information.\n\n\n\n!dir\n# `!` 를 씀으로 터미널에서 사용하겠다는 의미 \n\n1.png  README.md  [1]\\ 터미널과\\ 활용.ipynb  asdf\n\n\n\n!mkdir asdf\n\nmkdir: cannot create directory ‘asdf’: File exists\n\n\n\n# 모든 GUI 명령어(현재컴픁)들은 CLI 에 대응된다\n\n\n\n\n\n\n\n\n- terminal 을 주는 것 : 모든 컴퓨터의 권한을 주는 것  - 조심히 다뤄야한다.\n\n\n\n\n\n\n\n\n깃 다운로드: https://git-scm.com/downloads (完)  토큰생성 및 복사: https://github.com/settings/tokens (完) \n\n\n\n\n\n\n\n\n2.png"
+  },
+  {
+    "objectID": "posts/터미널활용/[0] 터미널과 활용 (1).html#원격컴퓨터",
+    "href": "posts/터미널활용/[0] 터미널과 활용 (1).html#원격컴퓨터",
+    "title": "첫번째 것",
+    "section": "",
+    "text": "- terminal 을 주는 것 : 모든 컴퓨터의 권한을 주는 것  - 조심히 다뤄야한다.\n\n\n\n\n\n\n\n\n깃 다운로드: https://git-scm.com/downloads (完)  토큰생성 및 복사: https://github.com/settings/tokens (完) \n\n\n\n\n\n\n\n\n2.png"
+  },
+  {
+    "objectID": "posts/터미널활용/[5]모델정리.html",
+    "href": "posts/터미널활용/[5]모델정리.html",
+    "title": "[5]딥러닝 모델정리",
+    "section": "",
+    "text": "model.add((Conv2D(32, kernel_size=(3,3), input_shape=(28,28,1),activation='relu'))\n          #input_shape = 행,열,색상\nmodel.add((Conv2D(64,(3,3), activation='relu'))\n        # 필터개수를 32개로 받아서 64개로 실시.\n\n\n\n- MaxPooling2d()  - model.add(MaxPooling2d(pool_size=2)) # 2x2 로 겹치지않게 나누어서 그중 가장 큰 숫자추출 - 전체크기가 절반으로 줄어듭니다."
+  },
+  {
+    "objectID": "posts/터미널활용/[5]모델정리.html#맥스풀링",
+    "href": "posts/터미널활용/[5]모델정리.html#맥스풀링",
+    "title": "[5]딥러닝 모델정리",
+    "section": "",
+    "text": "- MaxPooling2d()  - model.add(MaxPooling2d(pool_size=2)) # 2x2 로 겹치지않게 나누어서 그중 가장 큰 숫자추출 - 전체크기가 절반으로 줄어듭니다."
+  },
+  {
+    "objectID": "posts/터미널활용/[3]신경망의 이해.html",
+    "href": "posts/터미널활용/[3]신경망의 이해.html",
+    "title": "[3]신경망의 이해",
+    "section": "",
+    "text": "신경망의 기본단위\n\n- In deeplearning - $ y = ax + \\(&lt;span style=\"color:red; font-weight:bold;\"&gt;\\)b$\n=&gt; \\(y =\\) \\(w\\)x + \\(b\\)\n 가중치 = \\(w\\)  바이어스 = \\(bias\\)  가중합 = \\(wx\\)  활성화함수 = \\(a\\)\n# 다층 퍼셉트론의 설계\n$ n_1= (x_1w_{{11}} + x_2w{_{21}} + b_1) $\n\n\\(n_1\\) 은 하나의 은닉층내의퍼셉트론의 값입니다.\n\n$ n_2= (x_1w_{{12}} + x_2w{_{22}} + b_1) $\n$y_{out} =(n_1w_{{31}} + x_2w{_{32}} + b_3) $\n\n# W(1) 은 2x2 행렬로 볼수있다.\n\nW_1 = [[w_11 ,w_12] ,[w_21,w_22]]  W_2 = [[w_31],[w_32]]  b(1) = [[3],[1]]  b(2) = [-1]\n\n# 역전파는 생략 -&gt; 그냥 전미분으로 반대쪽으로 가면서 연쇄법칙으로 계산 용이\n\n\n\n #### 역전파가 전달될때마다 기울기의 값이 점점 작아져서 기울기 소실 발생(vanishing gradient)\n\n이유 : sigmoid 의 미분 값이 0.3이 max\n시그모이드, 하이퍼볼릭,렐루,소프트멕스가 이쓴데 렐룰를 쓰면 미분값이 1이되어 맨 처음층이 살아남을 수 있어서 사용됩니다.\n\n- 다른 경사하강법문제 -확률적 경사 하강법 SGD , 모멘텀 , 네스테로프 모멘텀 , 아다그라드 , RMSProp, 아담 등은 다음에 다루겠습니다."
+  },
+  {
+    "objectID": "posts/터미널활용/[3]신경망의 이해.html#기울기-소실-문제",
+    "href": "posts/터미널활용/[3]신경망의 이해.html#기울기-소실-문제",
+    "title": "[3]신경망의 이해",
+    "section": "",
+    "text": "#### 역전파가 전달될때마다 기울기의 값이 점점 작아져서 기울기 소실 발생(vanishing gradient)\n\n이유 : sigmoid 의 미분 값이 0.3이 max\n시그모이드, 하이퍼볼릭,렐루,소프트멕스가 이쓴데 렐룰를 쓰면 미분값이 1이되어 맨 처음층이 살아남을 수 있어서 사용됩니다.\n\n- 다른 경사하강법문제 -확률적 경사 하강법 SGD , 모멘텀 , 네스테로프 모멘텀 , 아다그라드 , RMSProp, 아담 등은 다음에 다루겠습니다."
+  },
+  {
     "objectID": "posts/터미널활용/[1]tensorflow와 기초수학.html",
     "href": "posts/터미널활용/[1]tensorflow와 기초수학.html",
     "title": "[1] tensorflow 를 이용한 딥러닝 모델 실습",
@@ -28,31 +112,10 @@
     "text": "최소제곱법으로 그은 선에 대한 평가가 필요하다.\n\n최소제곱법은 기울기와 절편이 최소이지만 이 모형이 제대로 우리의 데이터를 표현할 수 없다.\n\n그 이유는 우리의 데이터가 전체의 데이터가 아니라 표본이기 때문이다. 그리고 오차가 존재하기 때문이다. 등 더 많은 문제가 있다. - 선에대한 평가의 지표를 만들자\n\n평균제곱오차 MSE 이것이 그의 지표로써 이용된다.\nMSE = $ _{i=1}^{n} (y_i - _i)^2 $ 인데 단순회귀모형에서는 $ n -&gt; n-2$ , 원점을 지나는 단순회귀모형은$ n -&gt; n-1 $이런식으로 자유도에 따라서 식이 바뀐다.\n\n\n- 평가방법은 수리통계학에서의 작은 MSE 찾는 방법과 회귀분석에서의 MSE 계산으로 각종 지표로 유용한 직선인지 평가할 수 있다."
   },
   {
-    "objectID": "posts/[1]/[1] 터미널과 활용 (1).html",
-    "href": "posts/[1]/[1] 터미널과 활용 (1).html",
-    "title": "첫번째 것",
-    "section": "",
-    "text": "(base) root@76d004f3ae03:~/studyfile/github1/class# dir 2023-python1year dashlast datatoolbox_24 professEnergy sub\n- 어떤 폴더가 있었는지 표시 (옛날에 마우스가 없었음)\n(base) root@76d004f3ae03:~/studyfile/github1/class# mkdir asdf\n- mkdir : 새로운 폴더 생성 (base) root@76d004f3ae03:~/studyfile/github1/class# cd asdf \n(base) root@76d004f3ae03:~/studyfile/github1/class/asdf# cd ..  - cd : change directory 로 디렉토리 움직이기.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\ncmd 는 CLI 의 일종\n\n\n\n\n1.png\n\n\n- CLI 에서의 python 을 키고 껐을 때의 반응\n\n\n\n\n\n\n\ndir\n\n&lt;function dir&gt;\n\n\n\nmkdir\n\nmkdir: missing operand\nTry 'mkdir --help' for more information.\n\n\n\n!dir\n# `!` 를 씀으로 터미널에서 사용하겠다는 의미 \n\n1.png  README.md  [1]\\ 터미널과\\ 활용.ipynb  asdf\n\n\n\n!mkdir asdf\n\nmkdir: cannot create directory ‘asdf’: File exists\n\n\n\n# 모든 GUI 명령어(현재컴픁)들은 CLI 에 대응된다\n\n\n\n\n\n\n\n\n- terminal 을 주는 것 : 모든 컴퓨터의 권한을 주는 것  - 조심히 다뤄야한다.\n\n\n\n\n\n\n\n\n깃 다운로드: https://git-scm.com/downloads (完)  토큰생성 및 복사: https://github.com/settings/tokens (完) \n\n\n\n\n\n\n\n\n2.png"
-  },
-  {
-    "objectID": "posts/[1]/[1] 터미널과 활용 (1).html#원격컴퓨터",
-    "href": "posts/[1]/[1] 터미널과 활용 (1).html#원격컴퓨터",
-    "title": "첫번째 것",
-    "section": "",
-    "text": "- terminal 을 주는 것 : 모든 컴퓨터의 권한을 주는 것  - 조심히 다뤄야한다.\n\n\n\n\n\n\n\n\n깃 다운로드: https://git-scm.com/downloads (完)  토큰생성 및 복사: https://github.com/settings/tokens (完) \n\n\n\n\n\n\n\n\n2.png"
-  },
-  {
-    "objectID": "posts/터미널활용/[2] 연습연습.html",
-    "href": "posts/터미널활용/[2] 연습연습.html",
-    "title": "두번째 것",
-    "section": "",
-    "text": "[2] 연습\n\n1+1\n\n2"
-  },
-  {
     "objectID": "index.html",
     "href": "index.html",
     "title": "grajun",
     "section": "",
-    "text": "첫번째 것\n\n\n\n\n\n\n\n\n\n\n\nJan 2, 2024\n\n\n전준한\n\n\n\n\n\n\n\n\n\n\n\n\n두번째 것\n\n\n\n\n\n\n\n\n\n\n\nJan 2, 2024\n\n\n전준한\n\n\n\n\n\n\n\n\n\n\n\n\n[1] tensorflow 를 이용한 딥러닝 모델 실습\n\n\n\n\n\n\n\n\n\n\n\nDec 22, 2023\n\n\n전준한\n\n\n\n\n\n\nNo matching items"
+    "text": "[5]딥러닝 모델정리\n\n\n\n\n\n\n\n\n\n\n\nNov 12, 2024\n\n\n전준한\n\n\n\n\n\n\n\n\n\n\n\n\n[3]신경망의 이해\n\n\n\n\n\n\n\n\n\n\n\nNov 12, 2024\n\n\n전준한\n\n\n\n\n\n\n\n\n\n\n\n\n[4]딥러닝기초실습\n\n\n\n\n\n\n\n\n\n\n\nNov 12, 2024\n\n\n전준한\n\n\n\n\n\n\n\n\n\n\n\n\n첫번째 것\n\n\n\n\n\n\n\n\n\n\n\nJan 2, 2024\n\n\n전준한\n\n\n\n\n\n\n\n\n\n\n\n\n두번째 것\n\n\n\n\n\n\n\n\n\n\n\nJan 2, 2024\n\n\n전준한\n\n\n\n\n\n\n\n\n\n\n\n\n[2]경사하강법과 다중선형회귀\n\n\n\n\n\n\n\n\n\n\n\nDec 22, 2023\n\n\n전준한\n\n\n\n\n\n\n\n\n\n\n\n\n[1] tensorflow 를 이용한 딥러닝 모델 실습\n\n\n\n\n\n\n\n\n\n\n\nDec 22, 2023\n\n\n전준한\n\n\n\n\n\n\nNo matching items"
   }
 ]

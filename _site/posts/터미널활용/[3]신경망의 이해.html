@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="전준한">
+<meta name="dcterms.date" content="2024-11-12">
 
-<title>grajun</title>
+<title>grajun - [3]신경망의 이해</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,27 +22,59 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<script src="site_libs/quarto-listing/list.min.js"></script>
-<script src="site_libs/quarto-listing/quarto-listing.js"></script>
-<script src="site_libs/quarto-html/quarto.js"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -68,35 +102,6 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>
-
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
-
-    const options = {
-      valueNames: ['listing-date','listing-title','listing-author','listing-image','listing-description','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
-      
-      searchColumns: ["listing-date","listing-title","listing-author","listing-image","listing-description","listing-categories"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
 
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
@@ -128,17 +133,17 @@ window.Quarto = {
 };
 </script>
 
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="../../styles.css">
 </head>
 
-<body class="nav-fixed">
+<body class="nav-fixed fullcontent">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+  <header id="quarto-header" class="headroom fixed-top">
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">grajun</span>
     </a>
   </div>
@@ -149,7 +154,7 @@ window.Quarto = {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./about.html"> 
+    <a class="nav-link" href="../../about.html"> 
 <span class="menu-text">About</span></a>
   </li>  
   <li class="nav-item compact">
@@ -170,251 +175,80 @@ window.Quarto = {
     </nav>
 </header>
 <!-- content -->
-<header id="title-block-header" class="quarto-title-block default page-columns page-full">
-  <div class="quarto-title-banner page-columns page-full">
-    <div class="quarto-title column-page-left">
-      <h1 class="title">grajun</h1>
-                      </div>
-  </div>
-    
-  
-  <div class="quarto-title-meta column-page-left">
-
-      
-    
-      
-    </div>
-    
-  
-  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(7)</span></div></div></div>
+    
 <!-- main -->
-<main class="content quarto-banner-title-block column-page-left" id="quarto-document-content">
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">[3]신경망의 이해</h1>
+</div>
 
 
 
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>전준한 </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">November 12, 2024</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
 
 
+</header>
 
 
+<section id="퍼셉트론" class="level1">
+<h1><code>-</code> 퍼셉트론</h1>
+<ul>
+<li>신경망의 기본단위</li>
+</ul>
+<p><code>-</code> In deeplearning - $ y = ax + <span class="math inline">\(&lt;span style="color:red; font-weight:bold;"&gt;\)</span>b$</p>
+<p>=&gt; <span class="math inline">\(y =\)</span> <span style="color:red;"><span class="math inline">\(w\)</span></span>x + <span style="color:red;"><span class="math inline">\(b\)</span></span></p>
+<p><br> 가중치 = <span class="math inline">\(w\)</span> <br> 바이어스 = <span class="math inline">\(bias\)</span> <br> 가중합 = <span class="math inline">\(wx\)</span> <br> 활성화함수 = <span class="math inline">\(a\)</span></p>
+<p># 다층 퍼셉트론의 설계</p>
+<p>$ n_1= (x_1w_{<em>{11}} + x_2w</em>{_{21}} + b_1) $</p>
+<ul>
+<li><span class="math inline">\(n_1\)</span> 은 하나의 은닉층내의퍼셉트론의 값입니다.</li>
+</ul>
+<p>$ n_2= (x_1w_{<em>{12}} + x_2w</em>{_{22}} + b_1) $</p>
+<p>$y_{out} =(n_1w_{<em>{31}} + x_2w</em>{_{32}} + b_3) $</p>
+<div id="97b4d1a3-3cbb-4c7f-a520-3b91513d03b1" class="cell" data-tags="[]" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># W(1) 은 2x2 행렬로 볼수있다.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>W_1 = [[w_11 ,w_12] ,[w_21,w_22]] <br> W_2 = [[w_31],[w_32]] <br> b(1) = [[3],[1]] <br> b(2) = [-1]</p>
+<div id="c36bc398-800d-4bcf-83e6-0cca697f202c" class="cell" data-tags="[]" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 역전파는 생략 -&gt; 그냥 전미분으로 반대쪽으로 가면서 연쇄법칙으로 계산 용이</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="기울기-소실-문제" class="level2">
+<h2 class="anchored" data-anchor-id="기울기-소실-문제"><code>-</code> 기울기 소실 문제</h2>
+<p><br> #### 역전파가 전달될때마다 기울기의 값이 점점 작아져서 기울기 소실 발생(vanishing gradient)</p>
+<ul>
+<li>이유 : sigmoid 의 미분 값이 0.3이 max</li>
+<li>시그모이드, 하이퍼볼릭,렐루,소프트멕스가 이쓴데 렐룰를 쓰면 미분값이 1이되어 맨 처음층이 살아남을 수 있어서 사용됩니다.</li>
+</ul>
+<p><code>-</code> 다른 경사하강법문제 -확률적 경사 하강법 SGD , 모멘텀 , 네스테로프 모멘텀 , 아다그라드 , RMSProp, 아담 등은 다음에 다루겠습니다.</p>
 
 
-<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
-<div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-listing-date-sort="1731369600000" data-listing-file-modified-sort="1704258779299" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="121">
-<div class="thumbnail">
-<p><a href="./posts/터미널활용/[5]모델정리.html" class="no-external"></a></p><a href="./posts/터미널활용/[5]모델정리.html" class="no-external">
-<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
-</a><p><a href="./posts/터미널활용/[5]모델정리.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/터미널활용/[5]모델정리.html" class="no-external">[5]딥러닝 모델정리</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/터미널활용/[5]모델정리.html" class="no-external"></a>
-</div>
-<div class="listing-description">
-<a href="./posts/터미널활용/[5]모델정리.html" class="no-external"><code>-</code> MaxPooling2d() <br> - model.add(MaxPooling2d(pool_size=2)) # 2x2 로 겹치지않게 나누어서 그중 가장 큰 숫자추출 - 전체크기가 절반으로 줄어듭니다.</a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/터미널활용/[5]모델정리.html" class="no-external">
-<div class="listing-date">
-Nov 12, 2024
-</div>
-<div class="listing-author">
-전준한
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="1" data-listing-date-sort="1731369600000" data-listing-file-modified-sort="1704258745331" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="127">
-<div class="thumbnail">
-<p><a href="./posts/터미널활용/[3]신경망의 이해.html" class="no-external"></a></p><a href="./posts/터미널활용/[3]신경망의 이해.html" class="no-external">
-<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
-</a><p><a href="./posts/터미널활용/[3]신경망의 이해.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/터미널활용/[3]신경망의 이해.html" class="no-external">[3]신경망의 이해</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/터미널활용/[3]신경망의 이해.html" class="no-external"></a>
-</div>
-<div class="listing-description">
-<a href="./posts/터미널활용/[3]신경망의 이해.html" class="no-external"><code>-</code> In deeplearning - $ y = ax + <span class="math inline">\(&lt;span style="color:red; font-weight:bold;"&gt;\)</span>b$</a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/터미널활용/[3]신경망의 이해.html" class="no-external">
-<div class="listing-date">
-Nov 12, 2024
-</div>
-<div class="listing-author">
-전준한
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="2" data-listing-date-sort="1731369600000" data-listing-file-modified-sort="1704258757847" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="42">
-<div class="thumbnail">
-<p><a href="./posts/터미널활용/[4]딥러닝기초실습.html" class="no-external"></a></p><a href="./posts/터미널활용/[4]딥러닝기초실습.html" class="no-external">
-<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
-</a><p><a href="./posts/터미널활용/[4]딥러닝기초실습.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/터미널활용/[4]딥러닝기초실습.html" class="no-external">[4]딥러닝기초실습</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/터미널활용/[4]딥러닝기초실습.html" class="no-external"></a>
-</div>
-<div class="listing-description">
-<a href="./posts/터미널활용/[4]딥러닝기초실습.html" class="no-external"><code>-</code> input_dim 으로 변수개수를 만들고 dense 는 은닉층 + 입력층의 역할을 겸합니다. - 현재 30,17 은 17개수의 변수 -&gt; 30개의 변수로 늘리겠다는것입니다.</a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/터미널활용/[4]딥러닝기초실습.html" class="no-external">
-<div class="listing-date">
-Nov 12, 2024
-</div>
-<div class="listing-author">
-전준한
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="3" data-listing-date-sort="1704153600000" data-listing-file-modified-sort="1704281357450" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="201">
-<div class="thumbnail">
-<p><a href="./posts/터미널활용/[0] 터미널과 활용 (1).html" class="no-external"></a></p><a href="./posts/터미널활용/[0] 터미널과 활용 (1).html" class="no-external">
-<p class="card-img-top"><img src="posts/터미널활용/[0] 터미널과 활용 (1)_files/figure-html/dbd043d7-e679-40a3-be78-783b46233608-1-7b5103fd-fac5-4497-b0a7-31975700c4b2.png"  class="thumbnail-image card-img"/></p>
-</a><p><a href="./posts/터미널활용/[0] 터미널과 활용 (1).html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/터미널활용/[0] 터미널과 활용 (1).html" class="no-external">첫번째 것</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/터미널활용/[0] 터미널과 활용 (1).html" class="no-external"></a>
-</div>
-<div class="listing-description">
-<a href="./posts/터미널활용/[0] 터미널과 활용 (1).html" class="no-external">(base) root@76d004f3ae03:~/studyfile/github1/class# dir 2023-python1year dashlast datatoolbox_24 professEnergy sub</a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/터미널활용/[0] 터미널과 활용 (1).html" class="no-external">
-<div class="listing-date">
-Jan 2, 2024
-</div>
-<div class="listing-author">
-전준한
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="4" data-listing-date-sort="1704153600000" data-listing-file-modified-sort="1704281415274" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="2">
-<div class="thumbnail">
-<p><a href="./posts/터미널활용/[2] 연습연습.html" class="no-external"></a></p><a href="./posts/터미널활용/[2] 연습연습.html" class="no-external">
-<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
-</a><p><a href="./posts/터미널활용/[2] 연습연습.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/터미널활용/[2] 연습연습.html" class="no-external">두번째 것</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/터미널활용/[2] 연습연습.html" class="no-external"></a>
-</div>
-<div class="listing-description">
-<a href="./posts/터미널활용/[2] 연습연습.html" class="no-external"><code>[2]</code> 연습</a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/터미널활용/[2] 연습연습.html" class="no-external">
-<div class="listing-date">
-Jan 2, 2024
-</div>
-<div class="listing-author">
-전준한
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="5" data-listing-date-sort="1703203200000" data-listing-file-modified-sort="1704258596107" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="27">
-<div class="thumbnail">
-<p><a href="./posts/터미널활용/[2]경사하강법과 다중선형회귀.html" class="no-external"></a></p><a href="./posts/터미널활용/[2]경사하강법과 다중선형회귀.html" class="no-external">
-<p class="card-img-top"><img src="posts/터미널활용/[2]경사하강법과 다중선형회귀_files/figure-html/cell-2-output-1.png"  class="thumbnail-image card-img"/></p>
-</a><p><a href="./posts/터미널활용/[2]경사하강법과 다중선형회귀.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/터미널활용/[2]경사하강법과 다중선형회귀.html" class="no-external">[2]경사하강법과 다중선형회귀</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/터미널활용/[2]경사하강법과 다중선형회귀.html" class="no-external"></a>
-</div>
-<div class="listing-description">
-<a href="./posts/터미널활용/[2]경사하강법과 다중선형회귀.html" class="no-external">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im">import</span> numpy <span class="im">as</span> np </span>
-<span id="cb1-2"><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb1-3"><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb1-4"></span>
-<span id="cb1-5">data <span class="op">=</span> [[<span class="dv">2</span>,<span class="dv">81</span>],[<span class="dv">4</span>,<span class="dv">93</span>],[<span class="dv">6</span>,<span class="dv">91</span>],[<span class="dv">8</span>,<span class="dv">97</span>]]</span>
-<span id="cb1-6">x<span class="op">=</span>[i[<span class="dv">0</span>] <span class="cf">for</span> i <span class="kw">in</span> data]</span>
-<span id="cb1-7">y<span class="op">=</span>[i[<span class="dv">1</span>] <span class="cf">for</span> i <span class="kw">in</span> data]</span>
-<span id="cb1-8"></span>
-<span id="cb1-9">plt.figure(figsi…<span class="op"></span><span class="dv"></span><span class="dv"></span></span><span id="cb1-10"></span><span id="cb1-11"></span><span id="cb1-12"></span><span id="cb1-13"><span class="op"></span></span><span id="cb1-14"><span class="op"></span></span><span id="cb1-15"></span><span id="cb1-16"><span class="op"></span><span class="dv"></span></span><span id="cb1-17"><span class="op"></span><span class="dv"></span></span><span id="cb1-18"></span><span id="cb1-19"><span class="op"></span><span class="fl"></span></span><span id="cb1-20"><span class="op"></span><span class="dv"></span></span><span id="cb1-21"></span><span id="cb1-22"><span class="cf"></span><span class="kw"></span><span class="bu"></span></span><span id="cb1-23"><span class="op"></span><span class="op"></span><span class="op"></span></span><span id="cb1-24"><span class="op"></span><span class="op"></span></span><span id="cb1-25"><span class="op"></span><span class="op"></span><span class="dv"></span><span class="op"></span><span class="bu"></span><span class="op"></span><span class="bu"></span><span class="op"></span></span><span id="cb1-26"><span class="op"></span><span class="op"></span><span class="dv"></span><span class="op"></span><span class="bu"></span><span class="op"></span><span class="bu"></span></span><span id="cb1-27"></span><span id="cb1-28"><span class="op"></span><span class="op"></span><span class="op"></span></span><span id="cb1-29"><span class="op"></span><span class="op"></span><span class="op"></span></span><span id="cb1-30"><span class="cf"></span><span class="op"></span><span class="dv"></span><span class="op"></span><span class="dv"></span></span><span id="cb1-31"><span class="bu"></span><span class="st"></span><span class="op"></span></span><span id="cb1-32"></span><span id="cb1-33"><span class="op"></span><span class="op"></span><span class="op"></span></span><span id="cb1-34"></span><span id="cb1-35"><span class="bu"></span><span class="bu"></span><span class="bu"></span><span class="bu"></span></span><span id="cb1-36"></span></code></pre></div><div class="cell-output cell-output-display"><div><figure class="figure"><p></p></figure></div></div><div class="cell-output cell-output-stdout"><pre><code></code></pre></div><div class="cell-output cell-output-display"><div><figure class="figure"><p></p></figure></div></div></a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/터미널활용/[2]경사하강법과 다중선형회귀.html" class="no-external">
-<div class="listing-date">
-Dec 22, 2023
-</div>
-<div class="listing-author">
-전준한
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="6" data-listing-date-sort="1703203200000" data-listing-file-modified-sort="1704281580046" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="306">
-<div class="thumbnail">
-<p><a href="./posts/터미널활용/[1]tensorflow와 기초수학.html" class="no-external"></a></p><a href="./posts/터미널활용/[1]tensorflow와 기초수학.html" class="no-external">
-<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
-</a><p><a href="./posts/터미널활용/[1]tensorflow와 기초수학.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/터미널활용/[1]tensorflow와 기초수학.html" class="no-external">[1] tensorflow 를 이용한 딥러닝 모델 실습</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/터미널활용/[1]tensorflow와 기초수학.html" class="no-external"></a>
-</div>
-<div class="listing-description">
-<a href="./posts/터미널활용/[1]tensorflow와 기초수학.html" class="no-external"><code>-</code> 뉴런의 개수와 비활성화함수로 그저 그냥 전미분 함수로 backpropaganda 랑 propaganda 실시 (역전파와 순전파) 로 나오는 그냥 값일 뿐</a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/터미널활용/[1]tensorflow와 기초수학.html" class="no-external">
-<div class="listing-date">
-Dec 22, 2023
-</div>
-<div class="listing-author">
-전준한
-</div>
-</a>
-</div>
-</div>
-</div>
-<div class="listing-no-matching d-none">
-No matching items
-</div>
-</div></main> <!-- /main -->
+</section>
+</section>
+
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
