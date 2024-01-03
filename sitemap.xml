@@ -2,46 +2,54 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://Pogjunan.github.io/blog_test2/about.html</loc>
-    <lastmod>2024-01-03T11:27:52.665Z</lastmod>
+    <lastmod>2024-01-03T22:35:38.185Z</lastmod>
   </url>
   <url>
     <loc>https://Pogjunan.github.io/blog_test2/posts/터미널활용/[4]딥러닝기초실습.html</loc>
-    <lastmod>2024-01-03T05:12:37.847Z</lastmod>
-  </url>
-  <url>
-    <loc>https://Pogjunan.github.io/blog_test2/posts/터미널활용/[2] 연습연습.html</loc>
-    <lastmod>2024-01-03T11:30:15.274Z</lastmod>
-  </url>
-  <url>
-    <loc>https://Pogjunan.github.io/blog_test2/posts/터미널활용/[7] RNN.html</loc>
-    <lastmod>2024-01-03T05:13:35.323Z</lastmod>
-  </url>
-  <url>
-    <loc>https://Pogjunan.github.io/blog_test2/posts/터미널활용/[6]자연어처리연습.html</loc>
-    <lastmod>2024-01-03T05:13:49.319Z</lastmod>
-  </url>
-  <url>
-    <loc>https://Pogjunan.github.io/blog_test2/posts/터미널활용/[0] 터미널과 활용 (1).html</loc>
-    <lastmod>2024-01-03T11:29:17.450Z</lastmod>
-  </url>
-  <url>
-    <loc>https://Pogjunan.github.io/blog_test2/posts/터미널활용/[5]모델정리.html</loc>
-    <lastmod>2024-01-03T05:12:59.299Z</lastmod>
-  </url>
-  <url>
-    <loc>https://Pogjunan.github.io/blog_test2/posts/터미널활용/[2]경사하강법과 다중선형회귀.html</loc>
-    <lastmod>2024-01-03T05:09:56.107Z</lastmod>
-  </url>
-  <url>
-    <loc>https://Pogjunan.github.io/blog_test2/posts/터미널활용/[3]신경망의 이해.html</loc>
-    <lastmod>2024-01-03T05:12:25.331Z</lastmod>
+    <lastmod>2024-01-03T22:35:38.193Z</lastmod>
   </url>
   <url>
     <loc>https://Pogjunan.github.io/blog_test2/posts/터미널활용/[1]tensorflow와 기초수학.html</loc>
-    <lastmod>2024-01-03T11:33:00.046Z</lastmod>
+    <lastmod>2024-01-03T22:35:38.193Z</lastmod>
+  </url>
+  <url>
+    <loc>https://Pogjunan.github.io/blog_test2/posts/터미널활용/[3]신경망의 이해.html</loc>
+    <lastmod>2024-01-03T22:35:38.193Z</lastmod>
+  </url>
+  <url>
+    <loc>https://Pogjunan.github.io/blog_test2/posts/터미널활용/[7] RNN.html</loc>
+    <lastmod>2024-01-03T22:35:38.193Z</lastmod>
+  </url>
+  <url>
+    <loc>https://Pogjunan.github.io/blog_test2/posts/터미널활용/[6]자연어처리연습.html</loc>
+    <lastmod>2024-01-03T22:35:38.193Z</lastmod>
+  </url>
+  <url>
+    <loc>https://Pogjunan.github.io/blog_test2/posts/터미널활용/[0] 터미널과 활용 (1).html</loc>
+    <lastmod>2024-01-03T22:35:38.193Z</lastmod>
+  </url>
+  <url>
+    <loc>https://Pogjunan.github.io/blog_test2/posts/터미널활용/[5]모델정리.html</loc>
+    <lastmod>2024-01-03T22:35:38.193Z</lastmod>
+  </url>
+  <url>
+    <loc>https://Pogjunan.github.io/blog_test2/posts/터미널활용/[2]경사하강법과 다중선형회귀.html</loc>
+    <lastmod>2024-01-03T22:35:38.193Z</lastmod>
+  </url>
+  <url>
+    <loc>https://Pogjunan.github.io/blog_test2/posts/터미널활용/[9] 마무리 GAN 실행과해석.html</loc>
+    <lastmod>2024-01-03T22:36:16.265Z</lastmod>
+  </url>
+  <url>
+    <loc>https://Pogjunan.github.io/blog_test2/posts/터미널활용/[2] 연습연습.html</loc>
+    <lastmod>2024-01-03T22:35:38.193Z</lastmod>
+  </url>
+  <url>
+    <loc>https://Pogjunan.github.io/blog_test2/posts/터미널활용/[8] GAN.html</loc>
+    <lastmod>2024-01-03T22:36:16.181Z</lastmod>
   </url>
   <url>
     <loc>https://Pogjunan.github.io/blog_test2/index.html</loc>
-    <lastmod>2024-01-03T11:27:52.665Z</lastmod>
+    <lastmod>2024-01-03T22:35:38.185Z</lastmod>
   </url>
 </urlset>
